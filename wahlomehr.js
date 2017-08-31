@@ -53,7 +53,6 @@ function getResults(resultArray = []) {
 	var stock = resultArray.length;
 	var ul = document.getElementsByClassName("wom_ergebnis_list");	
 	var li = ul[0].children;
-	console.log(li);
 	
 	// li -> span -> span; li -> div -> div -> img; li -> div -> div -> p
 	for (var j = 0; j < li.length; j++) {
@@ -61,7 +60,6 @@ function getResults(resultArray = []) {
 		var partyPercent = li[j].children[0].children[1].children[0].textContent;
 		partyName = partyName.replace(partyPercent, '');
 		var partyStyle = li[j].children[0].children[0].getAttribute("style");
-		console.log(partyStyle);
 		var partyImg = li[j].children[1].children[0].children[0].getAttribute("src");
 		var partyDesc = li[j].children[1].children[0].children[2].textContent;
 		// j + resultArray length
