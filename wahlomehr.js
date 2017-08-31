@@ -42,7 +42,7 @@ function redirect(parties) {
 	}
 	
 	// Store Array
-	chrome.storage.local.set({'partyNo': parties});		
+	browser.storage.local.set({'partyNo': parties});		
 	// Redirect
 	window.location.href = next;
 }
@@ -72,7 +72,7 @@ function getResults(resultArray = []) {
 		resultArray[j+stock][3] = partyImg;
 		resultArray[j+stock][4] = partyDesc;
 	}	
-	chrome.storage.local.set({'results': resultArray});		
+	browser.storage.local.set({'results': resultArray});		
 }
 
 // Sort function
@@ -120,7 +120,7 @@ $(document).ready(function() {
 	var loc = window.location.href;
 	if(loc.includes("cb_parteien")) {
 		// Ergebnisdaten abgreifen
-		chrome.storage.local.get("results", function (data) {
+		browser.storage.local.get("results", function (data) {
 			// Falls noch keine Datei existiert
 			if(data.results === undefined) {
 				getResults();
@@ -129,15 +129,15 @@ $(document).ready(function() {
 				getResults(data.results);
 			}
 		})		
-		chrome.storage.local.get("partyNo", function (data) {
+		browser.storage.local.get("partyNo", function (data) {
 			// Wenn alle Ergebnisse abgefragt wurden
 			if(data.partyNo.length == 0) {
-				chrome.storage.local.get("results", function (data) {
+				browser.storage.local.get("results", function (data) {
 					showResults(data.results);
 				})
 			}
 			else {
-				chrome.storage.local.get("partyNo", function (data) {
+				browser.storage.local.get("partyNo", function (data) {
 					redirect(data.partyNo);
 				})
 			}
@@ -145,7 +145,7 @@ $(document).ready(function() {
 	}
 	// Auswahl
 	else if(loc.includes("cb_themen")) {		
-		chrome.storage.local.clear();
+		browser.storage.local.clear();
 		// Kennnummern aller Parteien abgreifen und auf Ergebnisseite mit den ersten 8 redirecten
 		redirect(getPartyNo());
 	}
