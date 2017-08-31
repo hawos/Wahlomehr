@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
 
   "name": "Wahl-O-Mehr",
   "description": "Zeigt die Ergebnisse für alle Parteien gleichzeitig.",
@@ -12,7 +12,8 @@
   "content_scripts": [
 	{
 		"matches": ["https://*.wahl-o-mat.de/*/main_app.php?cb_themen*", "https://*.wahl-o-mat.de/*/main_app.php?cb_parteien*"],		
-		"js": ["jquery.min.js", "wahlomehr.js"]
+		"js": ["jquery.min.js", "wahlomehr.js"],
+    "run_at": "document_end"
 	}
   ],
   

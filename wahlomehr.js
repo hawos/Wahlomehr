@@ -53,12 +53,15 @@ function getResults(resultArray = []) {
 	var stock = resultArray.length;
 	var ul = document.getElementsByClassName("wom_ergebnis_list");	
 	var li = ul[0].children;
+	console.log(li);
 	
 	// li -> span -> span; li -> div -> div -> img; li -> div -> div -> p
 	for (var j = 0; j < li.length; j++) {
-		var partyName = li[j].children[0].children[0].textContent;
-		var partyPercent = li[j].children[0].children[1].textContent;
-		var partyStyle = li[j].children[0].children[1].getAttribute("style");	
+		var partyName = li[j].children[0].children[1].textContent;		
+		var partyPercent = li[j].children[0].children[1].children[0].textContent;
+		partyName = partyName.replace(partyPercent, '');
+		var partyStyle = li[j].children[0].children[0].getAttribute("style");
+		console.log(partyStyle);
 		var partyImg = li[j].children[1].children[0].children[0].getAttribute("src");
 		var partyDesc = li[j].children[1].children[0].children[2].textContent;
 		// j + resultArray length
@@ -90,10 +93,11 @@ function showResults(results) {
 	ul[0].id = 'wel';
 	for(var i = 0; i < results.length; i++) {
 		$('#wel').append('<li id="li'+i+'"></li>');
-		
-			$('#li'+i).append('<span class="wom_ergebnis_balken" role="tab" id="result'+i+'"></span>');
-				$('#result'+i).append('<span class="wom_ergebnis_partei" id="party'+i+'">'+results[i][0]+'</span>');
-				$('#result'+i).append('<span class="wom_ergebnis_prozent ep1 transition" id="percent'+i+'">'+results[i][1]+'</span>');
+			var partyPercent = results[i][1].split(' ');
+			$('#li'+i).append('<div class="wom_ergebnis_balken" role="tab" id="result'+i+'"></div>');				
+				$('#result'+i).append('<span class="wom_ergebnis_prozent ep1 transition" id="percent'+i+'" style="background-position: ' + 5.48 * partyPercent[0].replace(",", ".") + ' center; width: 560px" data-ergebnis="'+results[i][1]+'"></span>');
+				$('#result'+i).append('<h2 id="h2'+i+'" class="wom_ergebnis_partei">'+results[i][0]+'</h2>')
+				$('#h2'+i).append('<span class="wom_ergebnis_partei_span" id="party'+i+'">'+results[i][1]+'</span>');
 				
 			$('#li'+i).append('<div style="display:none" id="info'+i+'"></div>');
 				$('#info'+i).append('<img width="90" height="90" style="border:0px;" src="'+results[i][3]+'" alt="Logo von:'+results[i][0]+'">');
@@ -106,7 +110,7 @@ function showResults(results) {
 
 // Balken klickbar machen
 function setClick(i) {
-	$('#percent'+i).click(function() {
+	$('#result'+i).click(function() {
 		$('#info'+i).toggle();
 	});
 }
@@ -118,7 +122,7 @@ $(document).ready(function() {
 		// Ergebnisdaten abgreifen
 		chrome.storage.local.get("results", function (data) {
 			// Falls noch keine Datei existiert
-			if(chrome.runtime.lastError) {
+			if(data.results === undefined) {
 				getResults();
 			}
 			else {
